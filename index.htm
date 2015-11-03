@@ -1,0 +1,73 @@
+<html>
+<head>
+<meta name="viewport" content="initial-scale = 1.0,maximum-scale = 1.0"/>
+<style>
+body {padding: 0; margin: 0;}
+#heade{ border: 3px solid #ff0000; height: 100px; position: fixed; top: 0px; right:  100px; left:  100px}
+#l{ border: 3px solid #ff0000; margin: auto 200px auto 0px; width: 100px; height: 100px; position: fixed; top: 200px; left:  0px}
+#r{ border: 3px solid #0000ff; margin: 0px auto auto 255px; width: 100px; height: 100px; position: fixed; top: 200px; right: 0px}
+.c{ border: -1px solid #000000; width: 100%; position: fixed}
+</style>
+<script> 
+var L=200;
+var R=200;
+var ML=0;
+var MR=0;
+var DL=0;
+var DR=0;
+var EL=0;
+var ER=0;
+addEventListener('touchmove', function(e) {
+e.preventDefault();
+var touch = e.touches[0];
+var posY = touch.pageY - 50;
+var posX = touch.pageX - 50;
+if (posY>=0 && posY<=400) {
+    X=posX;
+    Y=posY;
+        if(e.touches.length == 1 && posX < 100) {
+            document.getElementById("l").style.top = posY+'px';
+            L=Math.round(posY);
+        }  
+        if(e.touches.length == 1 && posX > 250) {
+            document.getElementById("r").style.top = posY+'px';
+            R=Math.round(posY);
+        }
+        if(e.touches.length == 2) { // If two fingers are touching
+            document.getElementById("l").style.top = posY+'px';
+            L=Math.round(posY);
+            document.getElementById("r").style.top = posY+'px';
+            R=Math.round(posY);
+        }
+}       
+}, false);
+addEventListener('touchend', function(e) {
+e.preventDefault();
+var touch = e.touches[0];
+var xhttp = new XMLHttpRequest();
+xhttp.onreadystatechange = function() {
+}
+if (L>180 && L<220) {ML=0;EL=0;} //P. centrale 10px toll.
+if (R>180 && R<220) {MR=0;ER=0;}
+if (L>220) {EL=1;DL=1;}
+if (R>220) {ER=1;DR=1;}
+if (L<180) {EL=1;DL=0;}
+if (R<180) {ER=1;DR=0;}
+if (L<180) {ML=Math.round(255-(L*1.30))}
+if (R<180) {MR=Math.round(255-(R*1.30))}
+if (L>220) {ML=Math.round(255-((400-L)*1.30))}
+if (R>220) {MR=Math.round(255-((400-R)*1.30))}
+//document.getElementById("header").innerHTML= ML+'-'+MR+'_'+L+'-'+R;
+xhttp.open("GET", "test?R="+MR+"&l="+ML+"&D="+DR+"&d="+DL+"&E="+ER+"&e="+EL, true);
+xhttp.send();
+}, false); 
+</script>
+</head>
+<body>
+<div id=header></div>
+<div id=l></div>
+<div id=r></div>
+<hr class=c style="top: 190px">
+<hr class=c style="top: 300px">
+</body>
+</html>
